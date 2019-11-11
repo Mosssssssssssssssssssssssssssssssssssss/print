@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-//test
 @Controller
 public class LoginAndRegisterController {
     @Autowired
@@ -35,6 +34,17 @@ public class LoginAndRegisterController {
             } else {
                 return new Message("success", "用户注册失败，请重试！");
             }
+        }
+    }
+    @RequestMapping("/login")
+    @ResponseBody
+    public Message login(User user){
+        System.out.println(user);
+        boolean login = loginAndRegisterService.login(user);
+        if (true == login) {
+            return new Message("success", "用户登陆成功！");
+        } else {
+            return new Message("success", "用户登陆失败，请重试！");
         }
     }
 }
