@@ -16,4 +16,6 @@ public interface LoginAndRegisterMapper {
     Integer exist(@Param("registerNum") String registerNum);
     @Select("select count(1) from user where number=#{number} and password=#{password}")
     Integer select(User user);
+    @Select("select * from user where number = #{number} and password = #{password}")
+    User selectUser(User user);
 }

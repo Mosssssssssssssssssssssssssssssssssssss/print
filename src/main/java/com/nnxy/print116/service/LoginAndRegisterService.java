@@ -36,4 +36,8 @@ public class LoginAndRegisterService {
             return false;
         }
     }
+
+    public User getUser(User user){
+        return loginAndRegisterMapper.selectUser(user);
+    }
 }

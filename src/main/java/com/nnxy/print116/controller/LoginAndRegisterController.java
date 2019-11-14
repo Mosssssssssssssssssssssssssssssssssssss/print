@@ -32,7 +32,7 @@ public class LoginAndRegisterController {
             if (true == b) {
                 return new Message("success", "用户注册成功！");
             } else {
-                return new Message("success", "用户注册失败，请重试！");
+                return new Message("error", "用户注册失败，请重试！");
             }
         }
     }
@@ -40,11 +40,17 @@ public class LoginAndRegisterController {
     @ResponseBody
     public Message login(User user){
         System.out.println(user);
-        boolean login = loginAndRegisterService.login(user);
-        if (true == login) {
-            return new Message("success", "用户登陆成功！");
-        } else {
-            return new Message("success", "用户登陆失败，请重试！");
+        boolean exist = loginAndRegisterService.exist(user.getNumber());
+        if(false==exist){
+            return new Message("error","没有这个用户");
+        }else {
+            boolean flag = loginAndRegisterService.login(user);
+            if (true == flag) {
+                User loginedUser = loginAndRegisterService.getUser(user);
+                return new Message("success", "用户登陆成功！",loginedUser);
+            } else {
+                return new Message("error", "用户名或密码错误，请重新输入！");
+            }
         }
     }
 }
