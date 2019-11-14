@@ -5,6 +5,8 @@ import com.nnxy.print116.entity.Print;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PrintService {
     @Autowired
@@ -16,5 +18,10 @@ public class PrintService {
         }else {
             return false;
         }
+    }
+
+    public List<Print> select() {
+        List<Print> list = printMapper.select();
+        return list;
     }
 }
