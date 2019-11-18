@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface PrintMapper {
-    @Insert("insert into print(number,size, printStyle, printColor, note, gmtCreate, gmtModify) " +
-            "values(#{number},#{size},#{printStyle},#{printColor},#{note},#{gmtCreate},#{gmtModify})")
+    @Insert("insert into print(number,pageSize, printStyle, printColor, note, gmtCreate, gmtModify,fileName,path) " +
+            "values(#{number},#{pageSize},#{printStyle},#{printColor},#{note},#{gmtCreate},#{gmtModify},#{fileName},#{path})")
     Integer inset(Print print);
     @Select("SELECT * FROM print WHERE flag=0 ORDER BY gmtModify ASC")
     List<Print> select();

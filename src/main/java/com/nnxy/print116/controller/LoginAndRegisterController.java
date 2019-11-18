@@ -49,6 +49,7 @@ public class LoginAndRegisterController {
                 User loginedUser = loginAndRegisterService.getUser(user);
                 return new Message("success", "用户登陆成功！",loginedUser);
             } else {
+                System.out.println("3");
                 return new Message("error", "用户名或密码错误，请重新输入！");
             }
         }

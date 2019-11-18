@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,30 +22,32 @@ public class PrintController {
     @Autowired
     PrintService printService;
     @RequestMapping("/print")
-    public @ResponseBody Message print(@RequestBody Print print){
+    public @ResponseBody Message print(Print print,MultipartFile file){
+        System.out.println(file);
         print.setGmtCreate(System.currentTimeMillis());
         print.setGmtModify(System.currentTimeMillis());
         System.out.println(print);
+        String originalFilename = file.getOriginalFilename();
+        String[] split = originalFilename.split("\\.") ;
+        String cut = UUID.randomUUID().toString()+"."+split[split.length-1];
+        String path = "D:/printFile/"+cut;
+        print.setPath(cut);
         Boolean b = printService.insert(print);
-        if (true==b){
-            return new Message("success","预约成功!","");
-        }else {
-            return new Message("error","预约失败!","");
+        System.out.println(path);
+        try {
+            if (true==b) {
+                file.transferTo(new File(path));
+                return new Message("success", "预约成功!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return new Message("error","预约失败!","");
     }
     @RequestMapping("/uploadFile")
     public @ResponseBody Message uploadFile(MultipartFile file){
-        String originalFilename = file.getOriginalFilename();
-        String[] split = originalFilename.split("\\.") ;
-        String path = "D:/printFile/"+UUID.randomUUID().toString()+"."+split[split.length-1];
-        System.out.println(path);
-        try {
-            file.transferTo(new File(path));
-            return new Message("success","上传成功!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new Message("error","上传失败!");
-        }
+
+        return null;
     }
     @RequestMapping("/printQueue")
     public @ResponseBody List<Print> printQueue(){
